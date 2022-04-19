@@ -1,0 +1,1 @@
+Repository for backgrounds to build the thumbnail
