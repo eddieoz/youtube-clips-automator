@@ -36,9 +36,9 @@ def upload_video(video_path, url, title, description, tags, thumb_path):
         f.close()
     
     # Upload video to Youtube
-    # command = "../youtubeuploader/youtubeuploader -filename "+video_path+" -metaJSON "+metadata_path+" -thumbnail "+thumb_path+""
-    # output_file = subprocess.call(command, shell=True)
-    # if (output_file != 0): exit(1)
+    command = "../youtubeuploader/youtubeuploader -filename "+video_path+" -metaJSON "+metadata_path+" -thumbnail "+thumb_path+""
+    output_file = subprocess.call(command, shell=True)
+    if (output_file != 0): exit(1)
 
 def thumb_generator(file, title):
     print('Generating thumbnails...')
