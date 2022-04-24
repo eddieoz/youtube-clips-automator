@@ -17,7 +17,8 @@ This project uses machine learning (AI) to automate the management of your Youtu
 ```
 $ pip install -r requirements
 ```
-4. Populate the folder `./backgrounds` with images to be selected to your thumbnail
+4. Populate the folder `./backgrounds` with images `.png` to be randomly selected to your thumbnail
+5. Leave a `default_face.png` on `./assets` folder just in case the bot is not able to find a smiling face on your video
 
 ## Usage
 
@@ -49,7 +50,7 @@ This project execute is executed in 4 phases:
 
 1. **Download and cut**: Download and cut the video if needed
 2. **Editing**: A bot will scan the entire video to find audio silences, to cut and edit the video automatically
-3. **Thumbnail**: A bot will use machine learning through OpenCV to find smiling faces in the video, to extract samples and build an unique thumbnail for your channel
+3. **Thumbnail**: A bot will use machine learning through Computer Vision to find smiling faces in the video, to extract samples and build an unique thumbnail for your channel
 4. **Upload**: Prepare the metadata and Upload the video to your Youtube channel
 5. **Marcelo**: is a tribute to [Marcelo Rezende](https://en.wikipedia.org/wiki/Marcelo_Rezende), a Brazilian journalist and television presenter who used to say 'Corta pra mim'
 
