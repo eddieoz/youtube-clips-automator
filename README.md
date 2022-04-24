@@ -23,10 +23,10 @@ $ pip install -r requirements
 
 1. Prepare a spreadsheet with the following fields (example ./list-sample.csv):
    
-   ```
-   url,time_from,time_to,podcast,title,description,tags
-   https://www.youtube.com/watch?v=[VIDEO_ID]],00:00:14,00:01:46,1,0,TITLE,DESCRIPTION,tag1 tag2 tag3 tag4
-    ```
+| url | time_from | time_to | podcast | title | description | tags | 
+| --- | --- | --- | --- | --- | --- | --- | 
+| https://www.youtube.com/watch?v=[VIDEO_ID] | 00:00:14 | 00:01:46 | 0 | TITLE | DESCRIPTION | tag1 tag2 tag3 tag4 | 
+ https://www.youtube.com/watch?v=[VIDEO_ID2] |  |  | 0 | TITLE | DESCRIPTION | tag1 tag2 tag3 tag4 |
 
 - **URL**: Youtube url
 - **time_from**: Clip start time (leave it blank for the entire video)
@@ -36,9 +36,9 @@ $ pip install -r requirements
 - **description**: Video clip description (don't use comma)
 - **tags**: Video tags splitted by spaces (don't use comma)
 
-2. Save the spreadsheet as a `csv` and place the `list.csv` file in the project folder
+1. Save the spreadsheet as a `csv` and place the `list.csv` file in the project folder
 
-3. Run `marcelo.py`
+2. Run `marcelo.py`
 ```
 $ python marcelo.py
 ```
@@ -63,3 +63,14 @@ This bot is live, producing the clips channel of the Morning Crypto show.
 
 - [jumpcutter](https://github.com/carykh/jumpcutter)
 - [Awesome Thumbnail Youtube Generator](https://github.com/CUAI-CAU/Awesome-Youtube-Thumbnail-Generator)
+
+## Descentralised repo
+This project can be found on [Radicle](https://app.radicle.network/seeds/pine.radicle.garden/rad:git:hnrkyonz47h6zb5mb5tb3xni3y4uwzqjn85gy)
+
+## TO-DO
+
+- [ ] Automate the podcast creation
+- [ ] Use ffmpeg GPU
+- [ ] Select backgrounds based on title and description
+- [ ] Indexing captions for searching specific spoken phrase on the video
+- [ ] Automate the creation of the keywords (by using Watson or another NLP)
