@@ -1,3 +1,9 @@
+#####
+## Original jumpcutter: https://github.com/carykh/jumpcutter
+## Created by @carykh
+## Modified by @eddieoz
+#####
+
 from contextlib import closing
 from PIL import Image
 import subprocess
@@ -16,20 +22,59 @@ import argparse
 from pytube import YouTube
 import sys
 from thumb_generator import create_thumbnail
+import shutil
 
 ## NVIDIA CUDA ffmpeg -hwaccel cuda -hwaccel_output_format cuda
 ## ref: https://docs.nvidia.com/video-technologies/video-codec-sdk/ffmpeg-with-nvidia-gpu/
 
-def downloadFile(url):
+TEMP_FOLDER = "TEMP"
+
+def downloadFile(url, title):
     print('Dowloading file if it does not exist...')
-    name = YouTube(url).streams.get_highest_resolution().download(max_retries=5, skip_existing=True)
+    yt = YouTube(url).streams
+
+    # retrieve the max resolution found on YouTube
+    itag, frame_size, frame_rate = max_resolution(yt)
+    name = yt.get_by_itag(itag).download(max_retries=5, skip_existing=True)
     print('Downloaded ' + name)
+
     print('Exists? '+str(os.path.exists(name)))
-    newname = name.replace(' ','_')
+    newname = title.replace(' ','_')+'.mp4'
     print('Renaming '+name+' to '+newname)
-    os.rename(name,newname)
-    # os.symlink(newname, name)
-    return newname
+    
+    # os.rename(name,newname)
+    shutil.copyfile(name, newname)
+    
+    return newname, frame_rate, frame_size
+
+def max_resolution(yt):
+    frame_rate = 30
+    res = 720
+    frame_size = ''
+    itag = ''
+    itag_audio = 0
+
+    for i in yt:
+        # print(i)
+        if ((i.is_dash == False) and (i.resolution != None) and int(i.resolution[:-1]) >= res):
+            if (i.resolution == '720p' and i.fps >= frame_rate):
+                frame_size = '1280:720'
+                itag = i.itag
+                frame_rate = i.fps
+                adaptive = i.is_dash
+            
+            if (i.resolution == '1080p' and i.fps >= frame_rate):
+                frame_size = '1920:1080'
+                itag = i.itag
+                frame_rate = i.fps
+                adaptive = i.is_dash
+
+            res = int(i.resolution[:-1])
+            # print ('Selected %s' % (str(res)))
+
+    print("Found video itag: %s, frame: %s, frame rate: %s" % (str(itag), frame_size, str(frame_rate)))
+    
+    return (itag, frame_size, frame_rate)    
 
 def getMaxVolume(s):
     maxv = float(np.max(s))
@@ -90,19 +135,22 @@ parser.add_argument('--title', type=str, help="Video title for filename")
 args = parser.parse_args()
 
 
+createPath(TEMP_FOLDER)
 
 frameRate = args.frame_rate
+FRAME_SIZE = '1920:1080'
 SAMPLE_RATE = args.sample_rate
 SILENT_THRESHOLD = args.silent_threshold
 FRAME_SPREADAGE = args.frame_margin
 NEW_SPEED = [args.silent_speed, args.sounded_speed]
 if args.url != None:
-    INPUT_FILE = downloadFile(args.url)
+    INPUT_FILE, frameRate, FRAME_SIZE = downloadFile(args.url, args.title)
 else:
     INPUT_FILE = args.input_file
 URL = args.url
 FRAME_QUALITY = args.frame_quality
 
+# Force re-scale (not the original video size defined by parameter)
 FRAME_SIZE = '1920:1080'
 
 assert INPUT_FILE != None , "why u put no input file, that dum"
@@ -117,22 +165,22 @@ if args.to_time != None:
 if args.from_time != None:
     assert args.to_time != None , 'if you are cutting a video, use --from_time AND --to_time'
 
+
+# if has a cut time, then cut the video before editing
 if args.from_time != None and args.to_time != None:
     CUT_FILE = inputToCutFilename(INPUT_FILE)
-    command = "ffmpeg -y -i "+INPUT_FILE+" -vf scale="+FRAME_SIZE+" -ss "+str(args.from_time)+" -to "+str(args.to_time)+" "+CUT_FILE+""
+    command = "ffmpeg -y -i "+INPUT_FILE+" -vf scale="+FRAME_SIZE+" -qscale:v "+str(FRAME_QUALITY)+" -b:v 6000k -ss "+str(args.from_time)+" -to "+str(args.to_time)+" "+CUT_FILE+""
     subprocess.call(command, shell=True)
     INPUT_FILE = CUT_FILE
 
-TEMP_FOLDER = "TEMP"
 AUDIO_FADE_ENVELOPE_SIZE = 400 # smooth out transition's audio by quickly fading in/out (arbitrary magic number whatever)
     
-createPath(TEMP_FOLDER)
-
-command = "ffmpeg -i "+INPUT_FILE+" -vf scale="+FRAME_SIZE+" -qscale:v "+str(FRAME_QUALITY)+" "+TEMP_FOLDER+"/frame%06d.jpg -hide_banner"
+# split frames
+command = "ffmpeg -i "+INPUT_FILE+" -vf scale="+FRAME_SIZE+" -qscale:v "+str(FRAME_QUALITY)+" -b:v 6000k "+TEMP_FOLDER+"/frame%06d.jpg -hide_banner"
 subprocess.call(command, shell=True)
 
+# split audio
 command = "ffmpeg -i "+INPUT_FILE+" -ab 160k -ac 2 -ar "+str(SAMPLE_RATE)+" -vn "+TEMP_FOLDER+"/audio.wav"
-
 subprocess.call(command, shell=True)
 
 command = "ffmpeg -i "+TEMP_FOLDER+"/input.mp4 -vf scale="+FRAME_SIZE+" 2>&1"
@@ -233,7 +281,8 @@ for endGap in range(outputFrame,audioFrameCount):
     copyFrame(int(audioSampleCount/samplesPerFrame)-1,endGap)
 '''
 
-command = "ffmpeg -y -framerate "+str(frameRate)+" -i "+TEMP_FOLDER+"/newFrame%06d.jpg -i "+TEMP_FOLDER+"/audioNew.wav -metadata handler_name='Produzido por @EddieOz youtube.com/eddieoz' -strict -2 -vf scale="+FRAME_SIZE+" "+OUTPUT_FILE
+# write the output video
+command = "ffmpeg -y -framerate "+str(frameRate)+" -i "+TEMP_FOLDER+"/newFrame%06d.jpg -i "+TEMP_FOLDER+"/audioNew.wav -metadata handler_name='Produzido por @EddieOz youtube.com/eddieoz' -qscale:v "+str(FRAME_QUALITY)+" -b:v 6000k -strict -2 -vf scale="+FRAME_SIZE+" "+OUTPUT_FILE
 subprocess.call(command, shell=True)
 
 deletePath(TEMP_FOLDER)

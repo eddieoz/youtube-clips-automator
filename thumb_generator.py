@@ -11,6 +11,8 @@ from rembg import remove
 from PIL import Image, ImageFont, ImageDraw 
 import os, random
 import argparse
+import shutil
+
 
 def find_smile(frame, text, count):
     # Load the cascade models
@@ -19,24 +21,19 @@ def find_smile(frame, text, count):
 
     SCALE_FACTOR=40
 
-    # cv2.imwrite('./tmp/frame-'+str(count)+'.png', frame)
-
-
     resizeimg = ''
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # cv2.imwrite('./tmp/frame-gray-'+str(count)+'.png', gray)
 
     # Detect the faces
     face = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
-    # Draw the rectangle around each face
-    for (x, y, w, h) in face:
 
+    for (x, y, w, h) in face:
+        # Draw the rectangle around each face
         img = cv2.rectangle(frame, (x-SCALE_FACTOR, y-SCALE_FACTOR), (x+w+SCALE_FACTOR, y+h+SCALE_FACTOR), (255, 255, 255), 15)
         
-        # cv2.imwrite('./tmp/img-rectangle-'+str(count)+'.png', img)
-
         # Save image to detect smile
         croped_face = img[y-SCALE_FACTOR:y+h+SCALE_FACTOR, x-SCALE_FACTOR:x+w+SCALE_FACTOR]
+        
         # print("[INFO] Face found. Saving locally.")
         # Store face
         # cv2.imwrite('./tmp/croped-'+str(count)+'.png', croped_face)
@@ -46,11 +43,10 @@ def find_smile(frame, text, count):
             break
         
         # Display output
-        #cv2.imshow('croped face', croped_face)
+        # cv2.imshow('croped face', croped_face)
         
         img_gray = cv2.cvtColor(croped_face, cv2.COLOR_BGR2GRAY)
-        # cv2.imwrite('./tmp/croped_gray-'+str(count)+'.png', img_gray)
-
+        
         if (not isinstance(img_gray, (list, tuple, np.ndarray)) or img_gray is None):
             print('Failed to detect face')
             break
@@ -179,9 +175,15 @@ def remove_thumbs():
     for f in os.listdir(dir):
         os.remove(os.path.join(dir, f))
     
+def copy_thumbs(title):
+    dir = './thumbs'
+    newdir = title.replace(' ','_')
+    shutil.copytree(dir, newdir, dirs_exist_ok=True)
+
 
 def main(input: str, title: str, delete_thumbs: bool=True):
     create_thumbnail(input, title, delete_thumbs)
+    copy_thumbs(title)
 
 def str2bool(value):
     return value.lower() == 'true'

@@ -1,25 +1,26 @@
 import csv
 import os
 import random
+import shutil
 import subprocess
 import sys
-from thumb_generator import create_thumbnail
 from youtube_uploader_selenium import YouTubeUploader
 from datetime import datetime
 import time
 
-def upload_video(video_path, csv_data, thumb_path):
+def upload_video(video_path, url, title, description, tags, thumb_path):
+    
     metadata_path = './metadata.json'
     now = datetime.now() # current date and time
 
-    description = str(csv_data[6])+ \
-    '\\n\\n-- Episodio completo: '+str(csv_data[0])+ \
+    description = str(description)+ \
+    '\\n\\n-- Episodio completo: '+str(url)+ \
     '\\n-- Todos os dias 8am ao vivo em https://www.twitch.tv/eddieoztv'
 
     # youtubeuploader metadata
-    metadata = '{ "title": "'+str(csv_data[5])+'", \
+    metadata = '{ "title": "'+str(title)+'", \
     "description": "'+description+'", \
-    "tags": ["'+str(csv_data[7]).replace(' ','","')+'"], \
+    "tags": ["'+str(tags).replace(' ','","')+'"], \
     "privacyStatus": "private", \
     "madeForKids": false, \
     "embeddable": true, \
@@ -34,33 +35,21 @@ def upload_video(video_path, csv_data, thumb_path):
         f.write(metadata)
         f.close()
     
-    # Go version
-    command = "../youtubeuploader/youtubeuploader -filename "+video_path+" -metaJSON "+metadata_path+" -thumbnail "+thumb_path+""
-    output_file = subprocess.call(command, shell=True)
-    if (output_file != 0): exit(1)
-    # Selenium version
-    # YouTubeUploader(video_path, metadata_path, thumb_path).upload()
-    # uploader = YouTubeUploader(video_path, metadata_path, thumb_path)
-    # was_video_uploaded, video_id = uploader.upload()
-    # assert was_video_uploaded
+    # Upload video to Youtube
+    # command = "../youtubeuploader/youtubeuploader -filename "+video_path+" -metaJSON "+metadata_path+" -thumbnail "+thumb_path+""
+    # output_file = subprocess.call(command, shell=True)
+    # if (output_file != 0): exit(1)
 
 def thumb_generator(file, title):
     print('Generating thumbnails...')
     bg_dir = './thumbs/'
-    # title = title.split('|')
-
-    # print('generating default thumbnail...')
-    # create_thumbnail('./assets/default_face.png', title[0], True)
-    # print('generating video thumbnails...')
-    # create_thumbnail(file, title[0])
-        
+            
     # if sucessfully copy the frame, check and create thumbnail
     command = "python ./thumb_generator.py --input './assets/default_face.png' --title '"+title+"'"
     output_file = subprocess.call(command, shell=True)
     
     command = "python ./thumb_generator.py --input "+file+" --title '"+title+"' -d False"
     output_file = subprocess.call(command, shell=True)
-    ## create_thumbnail(src, args.title, False)
     
     if (len(os.listdir(bg_dir)) >= 1):
         bg = random.choice(os.listdir(bg_dir))
@@ -68,36 +57,55 @@ def thumb_generator(file, title):
     else:
         exit(1)
 
+def move_files(title):
+    files = title.replace(' ','_')
+    command = "mv "+files+"*.mp4 "+files+"/"
+    output_file = subprocess.call(command, shell=True)
+
 def main():
     with open('list.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+
         try:
             header = next(reader)
             print(header)
             for row in reader:
                 print('%s' % (row))
-                title = row[5].split("|")
+
+                url             = row[0]
+                cut_start       = row[1]
+                cut_end         = row[2]
+                podcast         = row[3]
+                title           = row[4]
+                description     = row[5]
+                tags            = row[6]
+
+                title = title.split("|")
                 title = title[0]
 
-                if (row[3] == '0'):
-                    command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(row[0])+" --title '"+str(title)+"' --output_file output.mp4"
+                output_filename = title.replace(' ','_')+'_EDITED.mp4'
+
+                if (len(str(cut_start)) > 0 and len(str(cut_end)) > 0):
+                    print('Corta pra mim Marcelo Resenha')
+                    command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --from_time "+str(cut_start)+" --to_time "+str(cut_end)+" --output_file "+output_filename
                     output_file = subprocess.call(command, shell=True)
-                if (row[3] == '1'):
-                    command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(row[0])+" --title '"+str(title)+"' --from_time "+str(row[1])+" --to_time "+str(row[2])+" --output_file output.mp4"
+                else:
+                    print('Sem ponto de Corta pra mim Marcelo Resenha')
+                    command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --output_file "+output_filename
                     output_file = subprocess.call(command, shell=True)
                 
                 if (output_file == 0):
-                    thumb = thumb_generator('./output.mp4', title)
+                    thumb = thumb_generator('./'+output_filename, title)
                     print("Selected thumb: %s" % (thumb))
                     if (thumb != None):
-                        upload_video('./output.mp4', row, thumb)
+                        upload_video('./'+output_filename, url, title, description, tags, thumb)
                 
-                if (os.path.exists('./output.mp4')):
-                    os.remove('./output.mp4')
+                # Move all video files to dir/
+                move_files(title)
                 time.sleep(5)
 
         except csv.Error as e:
-            sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+            sys.exit('file {}, line {}: {}'.format(output_filename, reader.line_num, e))
 
     csvfile.close()
 
