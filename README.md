@@ -1,1 +1,1 @@
-# Youtube editing and thumbnail automation
+# Youtube clip channet editing and thumbnail automation
