@@ -64,7 +64,7 @@ This bot is live, producing the clips channel of the Morning Crypto show.
 - [jumpcutter](https://github.com/carykh/jumpcutter)
 - [Awesome Thumbnail Youtube Generator](https://github.com/CUAI-CAU/Awesome-Youtube-Thumbnail-Generator)
 
-## Descentralised repo
+## Decentralised repo
 This project can be found on [Radicle](https://app.radicle.network/seeds/pine.radicle.garden/rad:git:hnrkyonz47h6zb5mb5tb3xni3y4uwzqjn85gy)
 
 ## TO-DO
