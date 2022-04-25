@@ -79,6 +79,6 @@ This project can be found on [Radicle](https://app.radicle.network/seeds/pine.ra
 ## Buy me a coffee
 Did you like it? [Buy me a coffee](https://www.buymeacoffee.com/eddieoz)
 
-![Buy me a coffee](https://ipfs.io/ipfs/QmR6W4L3XiozMQc3EjfFeqSkcbu3cWnhZBn38z2W2FuTMZ?filename=buymeacoffee.webp)
+[![Buy me a coffee](https://ipfs.io/ipfs/QmR6W4L3XiozMQc3EjfFeqSkcbu3cWnhZBn38z2W2FuTMZ?filename=buymeacoffee.webp)](https://www.buymeacoffee.com/eddieoz)
 
 Or drop me a tip through Lightning Network: ⚡ [zbd.gg/eddieoz](https://zbd.gg/eddieoz)
