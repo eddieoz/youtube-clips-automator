@@ -81,4 +81,4 @@ Did you like it? [Buy me a coffee](https://www.buymeacoffee.com/eddieoz)
 
 ![Buy me a coffee](https://ipfs.io/ipfs/QmR6W4L3XiozMQc3EjfFeqSkcbu3cWnhZBn38z2W2FuTMZ?filename=buymeacoffee.webp)
 
-Or drop me a tip through Lightning Network: ⚡ eddieoz@zbd.gg
+Or drop me a tip through Lightning Network: ⚡ [zbd.gg/eddieoz](https://zbd.gg/eddieoz)
