@@ -15,7 +15,7 @@ This project uses machine learning (AI) to automate the management of your Youtu
 2. Configure Youtube API v3 accordingly [Youtube Uploader instructions](https://github.com/porjo/youtubeuploader/blob/master/README.md)
 3. Install python requirements
 ```
-$ pip install -r requirements
+$ pip install -r requirements.txt
 ```
 4. Populate the folder `./backgrounds` with images `.png` to be randomly selected to your thumbnail
 5. Leave a `default_face.png` on `./assets` folder just in case the bot is not able to find a smiling face on your video
