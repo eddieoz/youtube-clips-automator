@@ -149,8 +149,8 @@ def create_thumbnail(img_path, text, clear_thumbs:bool=True):
             #print("Frame not identified? Exiting...")
             break
 
-        # 30 fps video, then checking for smile each 0.5 secs
-        if (count >= 10): count = 0
+        # 30 fps video, then checking for smile each n frames
+        if (count >= 5): count = 0
         if (count == 0): 
             face = find_smile(frame,text, count)  
         
