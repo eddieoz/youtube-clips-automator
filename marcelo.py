@@ -103,7 +103,7 @@ def main():
                     output_file = subprocess.call(command, shell=True)
                 
 
-                # Insert Opening and Ending
+                # Insert Opening and Ending and setting output_filename_final
                 opening_video = Path('assets/opening.mp4')
                 ending_video = Path('assets/ending.mp4')
                 output_filename_final = title.replace(' ','_')+'_FINAL.mp4'
