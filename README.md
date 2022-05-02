@@ -19,7 +19,8 @@ $ pip install -r requirements.txt
 ```
 4. Populate the folder `./backgrounds` with images `.png` to be randomly selected to your thumbnail
 5. Leave a `default_face.png` on `./assets` folder just in case the bot is not able to find a smiling face on your video
-6. \[Optional] Leave a `opening.mp4` and `ending.mp4` videos (MP4 encoded, 1920x1080) on `assets/` dir to automatically insert an intro and ending sessions on your edited video
+6. Update `description` and `metadata` on `marcelo.py:upload_video` to fit your channel info
+7. \[Optional] Leave a `opening.mp4` and `ending.mp4` videos (MP4 encoded, 1920x1080) on `assets/` dir to automatically insert an intro and ending sessions on your edited video
 
 ## Usage
 
@@ -44,6 +45,7 @@ $ pip install -r requirements.txt
 ```
 $ python marcelo.py
 ```
+3. \[On first run only\] it will open a page asking for authorization on Youtube
 
 ## How it works
 
@@ -71,14 +73,14 @@ This project can be found on [Radicle](https://app.radicle.network/seeds/pine.ra
 
 ## Known issues
 - Issue on `cypher.py`
-  Youtube changed some internal APIs, not fixed on pytube yet. Solution found on: https://stackoverflow.com/a/71922554
-  Line 264:
-  ```
-  r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&\s*'
-  r'\([a-z]\s*=\s*([a-zA-Z0-9$]{2,3})(\[\d+\])?\([a-z]\)'
-  ```
-  Line 288:
-  `nfunc=re.escape(function_match.group(1))),`
+    - Youtube changed some internal APIs, not fixed on pytube yet. Solution found on: https://stackoverflow.com/a/71922554
+        - Line 264:
+        ```
+        r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&\s*'
+        r'\([a-z]\s*=\s*([a-zA-Z0-9$]{2,3})(\[\d+\])?\([a-z]\)'
+        ```
+        - Line 288:
+        `nfunc=re.escape(function_match.group(1))),`
 
 ## TO-DO
 
