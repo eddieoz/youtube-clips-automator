@@ -1,5 +1,8 @@
-Pillow
 audiotsm
-scipy
 numpy
+opencv_python
+Pillow
 pytube
+rembg
+scipy
+sympy
