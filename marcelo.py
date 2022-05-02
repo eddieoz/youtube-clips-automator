@@ -5,14 +5,20 @@ import shutil
 import subprocess
 import sys
 from youtube_uploader_selenium import YouTubeUploader
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 
-def upload_video(video_path, url, title, description, tags, thumb_path):
+def upload_video(num, video_path, url, title, description, tags, thumb_path):
     
     metadata_path = './metadata.json'
     now = datetime.now() # current date and time
 
+    # scheduling post calculation
+    interval = 3
+    hours = (num*interval)
+    hours_added = timedelta(hours = hours)
+    future_date_and_time = now + hours_added
+    
     description = str(description)+ \
     '\\n\\n-- Episodio completo: '+str(url)+ \
     '\\n-- Todos os dias 8am ao vivo em https://www.twitch.tv/eddieoztv'
@@ -26,7 +32,7 @@ def upload_video(video_path, url, title, description, tags, thumb_path):
     "embeddable": true, \
     "license": "creativeCommon", \
     "publicStatsViewable": true, \
-    "publishAt": "'+str(now.strftime("%Y-%m-%dT%H:%M:%S+03:00"))+'", \
+    "publishAt": "'+str(future_date_and_time.strftime("%Y-%m-%dT%H:%M:%S+03:00"))+'", \
     "categoryId": "28", \
     "playlistTitles": ["Cortes Morning Crypto"], \
     "language": "pt-BR" }'
@@ -59,7 +65,7 @@ def thumb_generator(file, title):
 
 def move_files(title):
     files = title.replace(' ','_')
-    command = "mv "+files+"*.mp4 "+files+"/"
+    command = "mv *"+files+"*.mp4 "+files+"/"
     output_file = subprocess.call(command, shell=True)
 
 def main():
@@ -69,6 +75,7 @@ def main():
         try:
             header = next(reader)
             print(header)
+            row_number = 0
             for row in reader:
                 print('%s' % (row))
 
@@ -94,14 +101,21 @@ def main():
                     command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --output_file "+output_filename
                     output_file = subprocess.call(command, shell=True)
                 
+
+                # Insert Opening and Ending
+                output_filename_final = title.replace(' ','_')+'_FINAL.mp4'
+                command = "ffmpeg -y -i ./assets/opening2.mp4 -i ./"+output_filename+" -i ./assets/ending2.mp4 -filter_complex '[0:v] [0:a] [1:v] [1:a] [2:v] [2:a] concat=n=3:v=1:a=1 [v] [a]' -map '[v]' -map '[a]' -metadata handler_name='Produzido por @EddieOz youtube.com/eddieoz' -qscale:v 1 -strict -2 -b:v 6000k "+output_filename_final
+                output_file = subprocess.call(command, shell=True)
+
                 if (output_file == 0):
                     thumb = thumb_generator('./'+output_filename, title)
                     print("Selected thumb: %s" % (thumb))
                     if (thumb != None):
-                        upload_video('./'+output_filename, url, title, description, tags, thumb)
+                        upload_video(row_number, './'+output_filename_final, url, title, description, tags, thumb)
                 
                 # Move all video files to dir/
                 move_files(title)
+                row_number+=1
                 time.sleep(5)
 
         except csv.Error as e:
