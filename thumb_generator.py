@@ -7,7 +7,7 @@ import cv2
 import time
 import numpy as np
 import time
-from rembg import remove
+#from rembg import remove
 from PIL import Image, ImageFont, ImageDraw 
 import os, random
 import argparse
