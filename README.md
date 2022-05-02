@@ -19,6 +19,7 @@ $ pip install -r requirements.txt
 ```
 4. Populate the folder `./backgrounds` with images `.png` to be randomly selected to your thumbnail
 5. Leave a `default_face.png` on `./assets` folder just in case the bot is not able to find a smiling face on your video
+6. \[Optional] Leave a `opening.mp4` and `ending.mp4` videos (MP4 encoded, 1920x1080) on `assets/` dir to automatically insert an intro and ending sessions on your edited video
 
 ## Usage
 

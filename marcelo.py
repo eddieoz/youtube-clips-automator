@@ -104,8 +104,8 @@ def main():
                 
 
                 # Insert Opening and Ending
-                opening_video = Path('assets/opening2.mp4')
-                ending_video = Path('assets/ending2.mp4')
+                opening_video = Path('assets/opening.mp4')
+                ending_video = Path('assets/ending.mp4')
                 if (opening_video.is_file() and ending_video.is_file()):
                     output_filename_final = title.replace(' ','_')+'_FINAL.mp4'
                     command = "ffmpeg -y -i ./assets/opening2.mp4 -i ./"+output_filename+" -i ./assets/ending2.mp4 -filter_complex '[0:v] [0:a] [1:v] [1:a] [2:v] [2:a] concat=n=3:v=1:a=1 [v] [a]' -map '[v]' -map '[a]' -metadata handler_name='Produzido por @EddieOz youtube.com/eddieoz' -qscale:v 1 -strict -2 -b:v 6000k "+output_filename_final
