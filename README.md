@@ -69,6 +69,17 @@ This bot is live, producing the clips channel of the Morning Crypto show.
 ## Decentralised repo
 This project can be found on [Radicle](https://app.radicle.network/seeds/pine.radicle.garden/rad:git:hnrkyonz47h6zb5mb5tb3xni3y4uwzqjn85gy)
 
+## Known issues
+- Issue on `cypher.py`
+  Youtube changed some internal APIs, not fixed on pytube yet. Solution found on: https://stackoverflow.com/a/71922554
+  Line 264:
+  ```
+  r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&\s*'
+  r'\([a-z]\s*=\s*([a-zA-Z0-9$]{2,3})(\[\d+\])?\([a-z]\)'
+  ```
+  Line 288:
+  `nfunc=re.escape(function_match.group(1))),`
+
 ## TO-DO
 
 - [ ] Automate the podcast creation
