@@ -1,11 +1,14 @@
 # set base image (host OS)
 FROM python:3.8
 
-RUN apt-get -y update
-RUN apt-get install -y ffmpeg
-
 # set the working directory in the container
 WORKDIR /app
+
+# download and install dependencies
+RUN apt-get -y update
+RUN apt-get install -y ffmpeg
+RUN wget https://github.com/porjo/youtubeuploader/releases/download/22.02/youtubeuploader_22.02_Linux_x86_64.tar.gz
+RUN tar xvf ./youtubeuploader_22.02_Linux_x86_64.tar.gz 
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
