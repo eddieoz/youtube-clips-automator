@@ -2,6 +2,8 @@
 
 This project uses machine learning (AI) to automate the management of your Youtube clips channel by clipping, editing, creating of thumbnails and uploading to your YT channel
 
+- Demo: https://www.youtube.com/channel/UCzwLEvNi0__N9BHbgTqJKeQ
+
 ## Requirements
 
 - Python 3
@@ -19,7 +21,7 @@ This project uses machine learning (AI) to automate the management of your Youtu
 $ pip install -r requirements.txt
 ```
 4. Populate the folder `./backgrounds` with images `.png` to be randomly selected to your thumbnail
-5. Leave a `default_face.png` on `./assets` folder just in case the bot is not able to find a smiling face on your video
+5. Leave a `default_face.png` on `./assets` folder just in case the bot is not able to find a smiling face on your video. It will be used as a default face.
 6. Update `description` and `metadata` on `marcelo.py:upload_video` to fit your channel info
 7. \[Optional] Leave a `opening.mp4` and `ending.mp4` videos (MP4 encoded, 1920x1080) on `assets/` dir to automatically insert an intro and ending sessions on your edited video
 
