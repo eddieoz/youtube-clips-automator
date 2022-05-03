@@ -8,11 +8,12 @@ This project uses machine learning (AI) to automate the management of your Youtu
 - [Youtube uploader](https://github.com/porjo/youtubeuploader/releases)
 - OpenCV
 - ffmpeg
+- Youtube API v3
 
 ## Setup
 
 1. Download the latest version of [youtubeuploader](https://github.com/porjo/youtubeuploader/releases) and extract the executable go file in the project's `./` folder
-2. Configure Youtube API v3 accordingly [Youtube Uploader instructions](https://github.com/porjo/youtubeuploader/blob/master/README.md)
+2. Configure Youtube API v3 accordingly [Youtube Uploader instructions](https://github.com/porjo/youtubeuploader/blob/master/README.md) and save `client_secrets.json` in the repo root.
 3. Install python requirements
 ```
 $ pip install -r requirements.txt
@@ -46,6 +47,16 @@ $ pip install -r requirements.txt
 $ python marcelo.py
 ```
 3. \[On first run only\] it will open a page asking for authorization on Youtube
+
+## Docker
+
+```
+$ docker build -t marcelo .
+$ docker run marcelo
+```
+
+Docker will copy all files to docker root, patch pytube bug and execute from there
+- Remember to have your `list.csv` (clips and cuts list) and `client_secrets.json` (Youtube API v3 access) ready in the repo root
 
 ## How it works
 
