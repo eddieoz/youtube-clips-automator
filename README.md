@@ -11,6 +11,7 @@ This project uses machine learning (AI) to automate the management of your Youtu
 - OpenCV
 - ffmpeg
 - Youtube API v3
+- ~50GB of free storage (depending of the size of the videos and cuts)
 
 ## Setup
 
@@ -64,6 +65,8 @@ You can run Marcelo without build the entire image after updating `lists/list.cs
 ```
 $ docker run -it -v "$(pwd)/lists:/app/lists" marcelo
 ```
+
+PS: running from a container is slower than running on your physical machine. Video editing and machine learning does not perform well inside virtual environments.
 
 ## How it works
 
