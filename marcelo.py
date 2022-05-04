@@ -70,7 +70,7 @@ def move_files(title):
     output_file = subprocess.call(command, shell=True)
 
 def main():
-    with open('list.csv', newline='') as csvfile:
+    with open('lists/list.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
 
         try:

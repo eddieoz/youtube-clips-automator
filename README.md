@@ -42,7 +42,7 @@ $ pip install -r requirements.txt
 - **description**: Video clip description (don't use comma)
 - **tags**: Video tags splitted by spaces (don't use comma)
 
-1. Save the spreadsheet as a `csv` and place the `list.csv` file in the project folder
+1. Save the spreadsheet as a `csv` and place the `lists/list.csv` file in the project folder
 
 2. Run `marcelo.py`
 ```
@@ -54,11 +54,14 @@ $ python marcelo.py
 
 ```
 $ docker build -t marcelo .
-$ docker run marcelo
+$ docker run -it marcelo
 ```
 
 Docker will copy all files to docker root, patch pytube bug and execute from there
-- Remember to have your `list.csv` (clips and cuts list) and `client_secrets.json` (Youtube API v3 access) ready in the repo root
+- Remember to have your `lists/list.csv` (clips and cuts list) and `client_secrets.json` (Youtube API v3 access) ready in the repo root
+
+You can run Marcelo without build the entire image after updating `lists/list.csv`:
+`$ docker run -it -v "$(pwd)/lists:/app/lists" marcelo`
 
 ## How it works
 

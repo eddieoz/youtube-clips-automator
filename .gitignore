@@ -3,7 +3,7 @@
 *.mp4
 youtubeuploader
 client_secrets.json
-list.csv
 metadata.json
 request.token
 __pycache__/thumb_generator.cpython-38.pyc
+assets/default_face.png
