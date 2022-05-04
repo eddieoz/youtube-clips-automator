@@ -55,7 +55,7 @@ $ python marcelo.py
 
 ```
 $ docker build -t marcelo .
-$ docker run -it marcelo
+$ docker run [-it] marcelo
 ```
 
 Docker will copy all files to docker root, patch pytube bug and execute from there
@@ -63,7 +63,7 @@ Docker will copy all files to docker root, patch pytube bug and execute from the
 
 You can run Marcelo without building the entire image after updating `lists/list.csv`:
 ```
-$ docker run -it -v "$(pwd)/lists:/app/lists" marcelo
+$ docker run [-it] -v "$(pwd)/lists:/app/lists" marcelo
 ```
 
 PS: running from a container is slower than running on your physical machine. Video editing and machine learning does not perform well inside virtual environments.
