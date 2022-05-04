@@ -61,7 +61,7 @@ $ docker run -it marcelo
 Docker will copy all files to docker root, patch pytube bug and execute from there
 - Remember to have your `lists/list.csv` (clips and cuts list) and `client_secrets.json` (Youtube API v3 access) ready in the repo root
 
-You can run Marcelo without build the entire image after updating `lists/list.csv`:
+You can run Marcelo without building the entire image after updating `lists/list.csv`:
 ```
 $ docker run -it -v "$(pwd)/lists:/app/lists" marcelo
 ```
