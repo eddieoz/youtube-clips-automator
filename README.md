@@ -53,6 +53,8 @@ $ python marcelo.py
 
 ## Docker
 
+It is recommended to run `youtubeuploader` mannually and upload at least one video, to generate and store the authorisation file **before** building the container.
+
 ```
 $ docker build -t marcelo .
 $ docker run [-it] marcelo

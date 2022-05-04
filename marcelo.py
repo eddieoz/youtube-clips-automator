@@ -52,10 +52,10 @@ def thumb_generator(file, title):
     bg_dir = './thumbs/'
             
     # if sucessfully copy the frame, check and create thumbnail
-    command = "python ./thumb_generator.py --input './assets/default_face.png' --title '"+title+"'"
+    command = "python3 ./thumb_generator.py --input './assets/default_face.png' --title '"+title+"'"
     output_file = subprocess.call(command, shell=True)
     
-    command = "python ./thumb_generator.py --input "+file+" --title '"+title+"' -d False"
+    command = "python3 ./thumb_generator.py --input "+file+" --title '"+title+"' -d False"
     output_file = subprocess.call(command, shell=True)
     
     if (len(os.listdir(bg_dir)) >= 1):
@@ -95,11 +95,11 @@ def main():
 
                 if (len(str(cut_start)) > 0 and len(str(cut_end)) > 0):
                     print('Corta pra mim Marcelo Resenha')
-                    command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --from_time "+str(cut_start)+" --to_time "+str(cut_end)+" --output_file "+output_filename
+                    command = "python3 ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --from_time "+str(cut_start)+" --to_time "+str(cut_end)+" --output_file "+output_filename
                     output_file = subprocess.call(command, shell=True)
                 else:
                     print('Sem ponto de Corta pra mim Marcelo Resenha')
-                    command = "python ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --output_file "+output_filename
+                    command = "python3 ./jumpcutter.py --sounded_speed 1 --silent_speed 999999 --frame_margin 2 --frame_rate 30 --frame_quality 1 --url "+str(url)+" --title '"+str(title)+"' --output_file "+output_filename
                     output_file = subprocess.call(command, shell=True)
                 
 
