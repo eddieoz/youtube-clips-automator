@@ -178,7 +178,7 @@ def remove_thumbs():
 def copy_thumbs(title):
     dir = './thumbs'
     newdir = title.replace(' ','_')
-    shutil.copytree(dir, newdir, dirs_exist_ok=True)
+    shutil.copytree(dir, 'output/'+newdir, dirs_exist_ok=True)
 
 
 def main(input: str, title: str, delete_thumbs: bool=True):
