@@ -115,8 +115,8 @@ def main():
                 if (output_file == 0):
                     thumb = thumb_generator('./'+output_filename, title)
                     print("Selected thumb: %s" % (thumb))
-                    #if (thumb != None):
-                    #    upload_video(row_number, './'+output_filename_final, url, title, description, tags, thumb)
+                    if (thumb != None):
+                       upload_video(row_number, './'+output_filename_final, url, title, description, tags, thumb)
                 
                 # Move all video files to dir/
                 move_files(title)

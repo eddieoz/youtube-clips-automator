@@ -70,12 +70,12 @@ def add_background(img, text):
 
     # merging files
     bg_dir = "./backgrounds/"
-    mclogo = Image.open('./assets/mc.png')
-    mclogo_width, mclogo_height = mclogo.size
+    logo = Image.open('./assets/logo.png').convert("RGBA")
+    logo_width, logo_height = logo.size
     img1 = Image.new('RGBA', size=(700,700), color=(0, 0, 0, 0))
     
     img1.paste(img,(175,175))
-    background = Image.open(bg_dir + random.choice(os.listdir(bg_dir)))
+    background = Image.open(bg_dir + random.choice(os.listdir(bg_dir))).convert("RGBA")
     W, H = (1280, 720)
     newimg = Image.new('RGBA', size=(W, H), color=(0, 0, 0, 0))
 
@@ -93,10 +93,10 @@ def add_background(img, text):
     
     if (x >= 0.5):
         newimg.paste(img1, (-120,-120), img1)
-        newimg.paste(mclogo, (W-mclogo_width-5,5), mclogo)
+        newimg.paste(logo, (W-logo_width-5,5), logo)
     else:
         newimg.paste(img1, (W-700+120,-120), img1)
-        newimg.paste(mclogo, (5,5), mclogo)
+        newimg.paste(logo, (5,5), logo)
     add_text(newimg, W, H, text)
 
 def add_text(bg, W, H, text):
