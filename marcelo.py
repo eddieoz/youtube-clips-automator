@@ -11,7 +11,7 @@ import time
 
 def upload_video(num, video_path, url, title, description, tags, thumb_path):
     
-    metadata_path = './metadata.json'
+    metadata_path = './output/metadata.json'
     now = datetime.now() # current date and time
 
     # scheduling post calculation
@@ -66,7 +66,7 @@ def thumb_generator(file, title):
 
 def move_files(title):
     files = title.replace(' ','_')
-    command = "mv *"+files+"*.mp4 "+files+"/"
+    command = "mkdir -p output/"+files+"/ && mv *.mp4 output/"+files+"/"
     output_file = subprocess.call(command, shell=True)
 
 def main():
@@ -115,8 +115,8 @@ def main():
                 if (output_file == 0):
                     thumb = thumb_generator('./'+output_filename, title)
                     print("Selected thumb: %s" % (thumb))
-                    if (thumb != None):
-                        upload_video(row_number, './'+output_filename_final, url, title, description, tags, thumb)
+                    #if (thumb != None):
+                    #    upload_video(row_number, './'+output_filename_final, url, title, description, tags, thumb)
                 
                 # Move all video files to dir/
                 move_files(title)
