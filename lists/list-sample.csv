@@ -1,2 +1,2 @@
 url,time_from,time_to,cut,podcast,title,description,tags
-https://www.youtube.com/watch?v=[VIDEO_ID]],00:00:14,00:01:46,1,0,TITLE,DESCRIPTION,tag1 tag2 tag3 tag4
+https://www.youtube.com/watch?v=[VIDEO_ID]],00:00:14,00:01:46,,TITLE,DESCRIPTION,tag1 tag2 tag3 tag4
