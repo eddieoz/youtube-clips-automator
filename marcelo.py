@@ -21,8 +21,9 @@ def upload_video(num, video_path, url, title, description, tags, thumb_path):
     future_date_and_time = now + hours_added
     
     description = str(description)+ \
-    '\\n\\n-- Episodio completo: '+str(url)+ \
-    '\\n-- Todos os dias 8am ao vivo em https://www.twitch.tv/eddieoztv'
+    '\\n\\n-- Episodio completo: '+str(url) +\
+    '\\n\\n-- Se inscreva, curta, compartilhe! Deixe seu comentário' +\
+    '\\n-- Obrigado por assistir!'
 
     # youtubeuploader metadata
     metadata = '{ "title": "'+str(title)+'", \
@@ -91,7 +92,9 @@ def main():
                 title = title.split("|")
                 title = title[0]
 
-                output_filename = title.replace(' ','_')+'_EDITED.mp4'
+                output_filename = os.getcwd() + '/' + title.replace(' ','_')+'_EDITED.mp4'
+                print ('File: %s' % (output_filename))
+                print ('Pwd: %s' % (os.getcwd()))
 
                 if (len(str(cut_start)) > 0 and len(str(cut_end)) > 0):
                     print('Corta pra mim Marcelo Resenha')
@@ -106,17 +109,18 @@ def main():
                 # Insert Opening and Ending and setting output_filename_final
                 opening_video = Path('assets/opening.mp4')
                 ending_video = Path('assets/ending.mp4')
-                output_filename_final = title.replace(' ','_')+'_FINAL.mp4'
-
+                output_filename_final = os.getcwd() + '/' + title.replace(' ','_')+'_FINAL.mp4'
+                
+                print('Concatenando videos de abertura e fechamento')
                 if (opening_video.is_file() and ending_video.is_file()):
-                    command = "ffmpeg -y -i "+str(opening_video)+" -i ./"+output_filename+" -i "+str(ending_video)+" -filter_complex '[0:v] [0:a] [1:v] [1:a] [2:v] [2:a] concat=n=3:v=1:a=1 [v] [a]' -map '[v]' -map '[a]' -metadata handler_name='Produzido por @EddieOz youtube.com/eddieoz' -qscale:v 1 -strict -2 -b:v 6000k "+output_filename_final
+                    command = "ffmpeg -y -i "+str(opening_video)+" -i "+output_filename+" -i "+str(ending_video)+" -filter_complex '[0:v] [0:a] [1:v] [1:a] [2:v] [2:a] concat=n=3:v=1:a=1 [v] [a]' -map '[v]' -map '[a]' -metadata handler_name='Produzido por @EddieOz youtube.com/eddieoz' -qscale:v 1 -strict -2 -b:v 6000k "+output_filename_final
                     output_file = subprocess.call(command, shell=True)
-
+                print('Gerando thumbs')
                 if (output_file == 0):
-                    thumb = thumb_generator('./'+output_filename, title)
+                    thumb = thumb_generator(output_filename, title)
                     print("Selected thumb: %s" % (thumb))
                     if (thumb != None):
-                       upload_video(row_number, './'+output_filename_final, url, title, description, tags, thumb)
+                       upload_video(row_number, output_filename_final, url, title, description, tags, thumb)
                 
                 # Move all video files to dir/
                 move_files(title)

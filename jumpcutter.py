@@ -134,8 +134,8 @@ parser.add_argument('--title', type=str, help="Video title for filename")
 
 args = parser.parse_args()
 
-
-createPath(TEMP_FOLDER)
+if not os.path.exists(TEMP_FOLDER):
+    createPath(TEMP_FOLDER)
 
 frameRate = args.frame_rate
 FRAME_SIZE = '1920:1080'
